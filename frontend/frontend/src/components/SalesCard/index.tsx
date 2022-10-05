@@ -19,7 +19,7 @@ function SalesCard() {
     useEffect(() => {
         axios.get(`${BASE_URL}/sales`)
             .then(response => {
-                console.log(response.data.content)
+                setSales(response.data.content);
             })
 
     }, [])
@@ -60,47 +60,27 @@ function SalesCard() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="show992">#341</td>
-                            <td className="show576">08/07/2022</td>
-                            <td>Anakin</td>
-                            <td className="show992">15</td>
-                            <td className="show992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <Button />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="show992">#341</td>
-                            <td className="show576">08/07/2022</td>
-                            <td>Anakin</td>
-                            <td className="show992">15</td>
-                            <td className="show992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <Button />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="show992">#341</td>
-                            <td className="show576">08/07/2022</td>
-                            <td>Anakin</td>
-                            <td className="show992">15</td>
-                            <td className="show992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <Button />
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
+                        {sales.map(saleList => {
+                            return (
+                                <tr key={saleList.id}>
+                                    <td className="show992">{saleList.id}</td>
+                                    <td className="show576">{saleList.date}</td>
+                                    <td>{saleList.sellerName}</td>
+                                    <td className="show992">{saleList.visited}</td>
+                                    <td className="show992">{saleList.deals}</td>
+                                    <td>R$ {saleList.amount}</td>
+                                    <td>
+                                        <div className="dsmeta-red-btn-container">
+                                            <Button />
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })
 
+                        }
+
+                    </tbody>
                 </table>
             </div>
 
