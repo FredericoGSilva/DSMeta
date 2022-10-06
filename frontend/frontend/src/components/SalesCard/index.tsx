@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Sale } from "../../models/sale";
 import { BASE_URL } from "../../utils/request";
 import Button from "../buttonNotification";
@@ -17,12 +18,16 @@ function SalesCard() {
     const [sales, setSales] = useState<Sale[]>([]);
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/sales`)
+
+        const dmin = minDate.toISOString().slice(0, 10);
+        const dmax = maxDate.toISOString().slice(0, 10);
+
+        axios.get(`${BASE_URL}/sales?minDate=${dmin}&maxDate=${dmax}`)
             .then(response => {
                 setSales(response.data.content);
             })
 
-    }, [])
+    }, [minDate, maxDate])
 
     return (
         <div className="dsmeta-card">
@@ -64,14 +69,14 @@ function SalesCard() {
                             return (
                                 <tr key={saleList.id}>
                                     <td className="show992">{saleList.id}</td>
-                                    <td className="show576">{saleList.date}</td>
+                                    <td className="show576">{new Date(saleList.date).toLocaleDateString()}</td>
                                     <td>{saleList.sellerName}</td>
                                     <td className="show992">{saleList.visited}</td>
                                     <td className="show992">{saleList.deals}</td>
-                                    <td>R$ {saleList.amount}</td>
+                                    <td>R$ {saleList.amount.toFixed(2)}</td>
                                     <td>
                                         <div className="dsmeta-red-btn-container">
-                                            <Button />
+                                            <Button saleId={saleList.id}/>
                                         </div>
                                     </td>
                                 </tr>
